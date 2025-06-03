@@ -3,73 +3,164 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VibeHive-Feed</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:,">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - VibeHive</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #4e73df, #1cc88a, #e74a3b);
+      background-size: 400% 400%;
+      animation: bgAnimation 10s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes bgAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      margin-bottom: 25px;
+      font-size: 2.2rem;
+      color: #333;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .login-container input:focus {
+      border-color: #4e73df;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #4e73df;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .login-container button:hover {
+      background-color: #3b5fc3;
+    }
+
+    .error-message {
+      color: #e74a3b;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="top-bar">
-      <h1 id="vibersTitle">Vibers</h1>
-      <div id="topControls">
-        <button id="themeToggle" type="button" aria-label="Toggle light and dark theme">💡</button>
-        <button id="friendToggle" type="button" aria-label="Toggle friend sidebar">👥</button>
-         <a href="chatbox.html" id="messageIcon" title="Open Chat">
-          💬
-         </a>
-
+  <div class="login-container">
+    <h2>Login to VibeHive</h2>
+    <form id="loginForm" novalidate>
+      <div class="mb-3 text-start">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" class="form-control" required autocomplete="username" />
+        <div class="invalid-feedback">Please enter your username.</div>
       </div>
-    </div>
-
-    <div class="main-box">
-      <div id="toggleContent"></div>
-
-      <div id="mainContent">
-        <form id="storyForm" onsubmit="addStory(); return false;">
-          <h2>Hive a Story</h2>
-          <input id="storyUser" placeholder="Your name" aria-label="Story user name" />
-          <textarea id="storyInput" placeholder="Your story text..." aria-label="Story text"></textarea>
-
-          <input type="file" id="storyImageInput" accept="image/*" style="display: none;" />
-          <label for="storyImageInput" class="custom-file-upload" aria-label="Upload image for story">📁</label>
-
-          <button type="submit">Post Story</button>
-        </form>
-
-        <h3 style="margin-bottom: 5px;">Stories</h3>
-        <div class="story-feed" id="storyFeed" aria-live="polite" aria-atomic="true"></div>
-
-        <hr />
-
-        <form id="postForm" onsubmit="addPost(); return false;">
-          <h2>Create Post</h2>
-          <input id="postUser" placeholder="Your name" aria-label="Post user name" />
-          <textarea id="postInput" placeholder="What's on your mind?" aria-label="Post text"></textarea>
-
-          <input type="file" id="postImageInput" accept="image/*" style="display: none;" />
-          <label for="postImageInput" class="custom-file-upload" aria-label="Upload image for post">📁</label>
-
-          <button type="submit">Post</button>
-        </form>
-
-        <h3 style="margin-top: 20px;">Posts</h3>
-        <div class="post-feed" id="postFeed" aria-live="polite" aria-atomic="true"></div>
+      <div class="mb-3 text-start">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" required autocomplete="current-password" />
+        <div class="invalid-feedback">Please enter your password.</div>
       </div>
-    </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <a href="register.html" class="register-link">Don't have an account? Register here</a>
 
-    <aside id="friendSidebar" class="friend-sidebar" aria-label="Friend suggestions sidebar" hidden>
-      <h3>Friend Suggestions</h3>
-      <ul>
-        <li>Jane Doe <button type="button">+ Follow</button></li>
-        <li>John Smith <button type="button">+ Follow</button></li>
-        <li>Alex Johnson <button type="button">+ Follow</button></li>
-      </ul>
-    </aside>
-
-    <script src="script.js"></script>
+    </form>
   </div>
+
+  <script>
+    function simpleHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return hash.toString();
+    }
+
+    // Example users data saved to localStorage for demo purposes
+    // In real app, you'd fetch this from a backend securely
+    if (!localStorage.getItem('users')) {
+      const demoUsers = [
+        { username: 'alice', passwordHash: simpleHash('password1'), category: 'vibe-scholars' },
+        { username: 'bob', passwordHash: simpleHash('password2'), category: 'vibe-hustle' },
+        { username: 'carol', passwordHash: simpleHash('password3'), category: 'vibe-feed' }
+      ];
+      localStorage.setItem('users', JSON.stringify(demoUsers));
+    }
+
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+
+      const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+      if (!user) {
+        alert('User not found. Please register first.');
+        return;
+      }
+
+      if (user.passwordHash !== simpleHash(password)) {
+        alert('Incorrect password.');
+        return;
+      }
+
+      localStorage.setItem('username', user.username);
+      localStorage.setItem('category', user.category);
+
+      // Redirect to section select page
+      window.location.href = 'section-select.html';
+    });
+  </script>
 </body>
 
 </html>
