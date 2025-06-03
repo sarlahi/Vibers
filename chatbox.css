@@ -1,0 +1,273 @@
+/* Reset and base */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  height: 100vh;
+}
+
+.chat-header h2 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  pointer-events: none;
+  /* So clicks pass through */
+  user-select: none;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+/* Animated background behind the entire page */
+.animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #325fdc, #7e13e9, #4334a6, #2288dc);
+  background-size: 400% 400%;
+  animation: gradientShift 5s ease infinite;
+  z-index: -1;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Chat container - fixed size and style */
+.chat-container {
+  max-width: 600px;
+  margin: 30px auto;
+  border: 5px solid #b5c0d9;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode styles applied only inside chat-container */
+.chat-container.dark {
+  background: #2b2b2b;
+  border-color: #555;
+  color: #eee;
+}
+
+/* Header */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background: #2b77c8;
+  color: #fff;
+  align-items: center;
+}
+
+/* Mode toggle button (icon style) */
+.mode-toggle {
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.mode-toggle:hover {
+  transform: rotate(20deg);
+}
+
+/* Chat box */
+.chat-box {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+#messageInput {
+  height: 40px;
+  transition: height 0.3s ease;
+  resize: none;
+  /* optional if textarea */
+}
+
+#messageInput.shrink {
+  height: 30px;
+}
+
+.message {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.message.new-message {
+  transform: scale(0.9);
+  opacity: 0.8;
+}
+
+
+
+/* Messages */
+.message {
+  max-width: 70%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  position: relative;
+  background: #e1f5fe;
+  word-wrap: break-word;
+}
+
+.message.user1 {
+  background: #dcf8c6;
+  margin-left: auto;
+  text-align: right;
+}
+
+.message.user2 {
+  background: #e6e6e6;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* Dark mode message colors */
+.chat-container.dark .message.user1 {
+  background: #3a5f3a;
+}
+
+.chat-container.dark .message.user2 {
+  background: #444;
+}
+
+/* Input area */
+.input-area {
+  display: flex;
+  padding: 10px;
+  gap: 5px;
+  position: relative;
+}
+
+.input-area input,
+.input-area select {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.input-area button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* Send button in blue */
+.input-area #sendBtn {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.input-area #sendBtn:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+
+.input-area button:hover {
+  background: #e0e0e0;
+}
+
+/* Emoji picker */
+.emoji-picker {
+  display: none;
+  position: absolute;
+  bottom: 50px;
+  left: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 6px;
+  z-index: 100;
+  width: 200px;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.emoji-picker span {
+  font-size: 20px;
+  cursor: pointer;
+  margin: 3px;
+  display: inline-block;
+  transition: transform 0.1s ease;
+}
+
+.emoji-picker span:hover {
+  transform: scale(1.3);
+}
+
+/* Reactions (future) */
+.reactions {
+  margin-top: 5px;
+}
+
+.reaction-btn {
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+/* Message actions */
+.msg-actions {
+  margin-top: 5px;
+}
+
+.msg-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  color: #9295a6;
+}
+
+/* Dark mode inputs */
+.chat-container.dark .input-area input,
+.chat-container.dark .input-area select {
+  background: #a8a3d5;
+  color: #eee;
+  border-color: #666;
+}
+
+.chat-container.dark .input-area button {
+  background: #b1b0c6;
+  color: #eee;
+  border-color: #666;
+}
+
+.chat-container.dark .input-area button:hover {
+  background: #555;
+}
+
+.msg-actions {
+  display: none;
+  /* hidden by default */
+  margin-top: 5px;
+}

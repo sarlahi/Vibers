@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VibeHive Feed</title>
+  <style>
+    /* Paste your entire CSS here */
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #e6f0fa;
+      /* very light blue background */
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    .header {
+      background-color: #4ae259;
+      /* medium blue */
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(74, 226, 97, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+    }
+
+    /* User Info */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      transition: border-color 0.3s ease;
+    }
+
+    .username {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* Main container */
+    .main-container {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 0 15px;
+      flex-grow: 1;
+    }
+
+    /* Card base */
+    .card {
+      background: white;
+      border: 1px solid #4a90e2;
+      /* blue border */
+      border-radius: 8px;
+      margin: 12px 0;
+      padding: 16px 20px;
+      color: #1a1a1a;
+      box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    }
+
+    /* New Post Section */
+    .new-post-section h2 {
+      margin-bottom: 12px;
+      color: #4ae261;
+      font-weight: 700;
+    }
+
+    /* Inputs */
+    .input-text,
+    .input-textarea,
+    .input-file {
+      width: 100%;
+      margin-bottom: 14px;
+      border: 1.5px solid #51e24a;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 1rem;
+      background-color: #f5faff;
+      /* very light blue */
+      color: #1a1a1a;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .input-text:focus,
+    .input-textarea:focus,
+    .input-file:focus {
+      outline: none;
+      border-color: #66ff70;
+      box-shadow: 0 0 8px #66a0ffaa;
+    }
+
+    /* Primary Button */
+    .primary-btn {
+      background-color: #4ae251;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .primary-btn:hover {
+      background-color: #66ffa6;
+    }
+
+    /* Feed Posts */
+    .feed .card {
+      position: relative;
+    }
+
+    .post-header,
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-header .avatar,
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #4ae266;
+      transition: border-color 0.3s ease;
+    }
+
+    .post-author {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #4a90e2;
+      flex-grow: 1;
+    }
+
+    .timestamp {
+      font-size: 0.85rem;
+      color: #668bcc;
+      margin-left: auto;
+      font-style: italic;
+    }
+
+    /* Post Content */
+    .post-content {
+      margin-bottom: 12px;
+      white-space: pre-line;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #333;
+    }
+
+    /* Post Media */
+    .post-media {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 12px 0;
+      object-fit: cover;
+      max-height: 400px;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .post-media:hover {
+      transform: scale(1.02);
+    }
+
+    .post-media video {
+      width: 100%;
+      border-radius: 8px;
+      max-height: 400px;
+    }
+
+    /* Reaction Bar */
+    .reaction-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .reaction-bar button {
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 50%;
+      transition: background-color 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a90e2;
+      font-weight: 700;
+    }
+
+    .reaction-bar button.active {
+      background-color: #51e24a;
+      color: white;
+      box-shadow: 0 0 8px #6bff66;
+    }
+
+    .reaction-bar button:hover {
+      background-color: #66ff8a;
+      color: white;
+    }
+
+    .reaction-count {
+      margin-top: 5px;
+      font-weight: bold;
+      color: #668bcc;
+    }
+
+    /* Post Actions */
+    .post-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .post-actions button {
+      border: none;
+      background: #63e24a;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .post-actions button:hover {
+      background-color: #66ffa3;
+      color: white;
+    }
+
+    /* Comment Section */
+    .comments-section {
+      border-top: 1px solid #d0dffb;
+      padding-top: 12px;
+    }
+
+    .comment {
+      border-top: 1px solid #c6d9fb;
+      padding: 12px 0;
+      font-size: 0.95rem;
+      color: #333;
+      position: relative;
+    }
+
+    .comment-header {
+      color: #a0e24a;
+      font-weight: 700;
+      justify-content: space-between;
+    }
+
+    .comment-content {
+      margin-bottom: 8px;
+      white-space: pre-line;
+      color: #444;
+    }
+
+    /* Comment Reactions */
+    .comment-reactions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .comment-reactions button {
+      font-size: 1rem;
+      padding: 5px 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: #4ae287;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .comment-reactions button.active {
+      background-color: #4ae254;
+      color: white;
+      box-shadow: 0 0 8px #73ff66;
+    }
+
+    .comment-reactions button:hover {
+      background-color: #66ff94;
+      color: white;
+    }
+
+    /* Comment Actions */
+    .comment-actions {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      gap: 10px;
+    }
+
+    .comment-actions button {
+      background: #4ae263;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .comment-actions button:hover {
+      background-color: #99ff66;
+    }
+
+    /* Add Comment Input */
+    .add-comment {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .add-comment textarea {
+      flex-grow: 1;
+      resize: vertical;
+      border: 1.5px solid #82e24a;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      min-height: 48px;
+      background-color: #f5faff;
+      color: #1a1a1a;
+    }
+
+    .add-comment textarea:focus {
+      outline: none;
+      border-color: #6eff66;
+      box-shadow: 0 0 8px #69ff66aa;
+    }
+
+    .add-comment button {
+      background-color: #4ae26d;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 0 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-comment button:hover {
+      background-color: #66a0ff;
+    }
+
+    /* Edit Textarea for posts/comments */
+    .edit-textarea {
+      width: 100%;
+      min-height: 60px;
+      margin-bottom: 12px;
+      border: 1.5px solid #4ae26b;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 1rem;
+      background-color: #f5faff;
+      color: #1a1a1a;
+      resize: vertical;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .edit-textarea:focus {
+      outline: none;
+      border-color: #78ff66;
+      box-shadow: 0 0 8px #66ff78aa;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.4rem;
+      }
+
+      .post-header .avatar,
+      .avatar {
+        width: 35px;
+        height: 35px;
+      }
+
+      .main-container {
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header" role="banner">
+    <h1>Vibe Hustle</h1>
+    <div class="user-info">
+      <img src="https://i.pravatar.cc/40?u=currentuser" alt="User Avatar" class="avatar" />
+      <span class="username">User</span>
+    </div>
+  </header>
+
+  <main class="main-container" role="main">
+    <section class="new-post-section card" aria-label="Create new post">
+      <h2>Hive a New Post</h2>
+      <textarea id="newPostText" class="input-textarea" rows="3" placeholder="What's on your mind?"
+        aria-label="New post text"></textarea>
+      <input type="file" id="newPostMedia" class="input-file" accept="image/*,video/*"
+        aria-label="Upload image or video" />
+      <button class="primary-btn" id="postBtn" aria-live="polite" aria-atomic="true">
+        Post
+      </button>
+    </section>
+
+    <section class="feed" id="feed" aria-live="polite" aria-relevant="additions" aria-label="Posts feed"></section>
+  </main>
+
+  <script>
+    // Data storage
+    const posts = [];
+
+    // Generate unique IDs
+    function generateId() {
+      return '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // Format date/time nicely
+    function formatTimestamp(date) {
+      return new Date(date).toLocaleString(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      });
+    }
+
+    // Render a post card HTML
+    function renderPost(post) {
+      const {
+        id,
+        author,
+        avatar,
+        timestamp,
+        content,
+        media,
+        reactions,
+        comments,
+      } = post;
+
+      // Reaction buttons and counts
+      const reactionTypes = ['👍', '❤️', '😂', '😮', '😢', '😡'];
+
+      const reactionButtonsHtml = reactionTypes
+        .map((emoji) => {
+          const count = reactions[emoji] || 0;
+          return `
+            <button
+              aria-label="React with ${emoji}"
+              data-postid="${id}"
+              data-reaction="${emoji}"
+              class="reaction-btn"
+              type="button"
+            >
+              ${emoji} ${count > 0 ? count : ''}
+            </button>`;
+        })
+        .join('');
+
+      // Comments HTML
+      const commentsHtml = comments
+        .map((comment) => {
+          return `
+          <article class="comment" id="comment-${comment.id}" role="article" aria-label="Comment by ${comment.author}">
+            <div class="comment-header">
+              <strong>${comment.author}</strong>
+              <time datetime="${comment.timestamp}">${formatTimestamp(comment.timestamp)}</time>
+              <div class="comment-actions">
+                <button aria-label="Edit comment" data-postid="${id}" data-commentid="${comment.id}" class="edit-comment-btn" type="button">Edit</button>
+                <button aria-label="Delete comment" data-postid="${id}" data-commentid="${comment.id}" class="delete-comment-btn" type="button">Delete</button>
+              </div>
+            </div>
+            <p class="comment-content">${escapeHtml(comment.content)}</p>
+          </article>
+          `;
+        })
+        .join('');
+
+      return `
+      <article class="card post" id="post-${id}" role="article" aria-label="Post by ${author}">
+        <header class="post-header">
+          <img src="${avatar}" alt="Avatar of ${author}" class="avatar" />
+          <h3 class="post-author">${author}</h3>
+          <time class="timestamp" datetime="${timestamp}">${formatTimestamp(timestamp)}</time>
+        </header>
+        <section class="post-content">${escapeHtml(content)}</section>
+        ${media
+          ? media.type === 'image'
+            ? `<img src="${media.src}" alt="Post media" class="post-media" />`
+            : `<video controls class="post-media"><source src="${media.src}" type="${media.mime}" />Your browser does not support video.</video>`
+          : ''
+        }
+        <div class="reaction-bar" role="group" aria-label="Reactions for post by ${author}">
+          ${reactionButtonsHtml}
+        </div>
+        <div class="post-actions">
+          <button data-postid="${id}" class="edit-post-btn" type="button" aria-label="Edit post by ${author}">Edit Post</button>
+          <button data-postid="${id}" class="delete-post-btn" type="button" aria-label="Delete post by ${author}">Delete Post</button>
+        </div>
+
+        <section class="comments-section" aria-label="Comments for post by ${author}">
+          ${commentsHtml}
+          <form data-postid="${id}" class="add-comment" aria-label="Add comment to post by ${author}">
+            <textarea required rows="2" placeholder="Write a comment..." aria-label="Comment text"></textarea>
+            <button type="submit">Comment</button>
+          </form>
+        </section>
+      </article>
+      `;
+    }
+
+    // Escape HTML to prevent XSS attacks in text content
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+        .replace(/\n/g, '<br>');
+    }
+
+    // Render all posts into the feed container
+    function renderFeed() {
+      const feed = document.getElementById('feed');
+      feed.innerHTML = posts.map(renderPost).join('');
+    }
+
+    // Handle new post submission
+    document.getElementById('postBtn').addEventListener('click', () => {
+      const text = document.getElementById('newPostText').value.trim();
+      const fileInput = document.getElementById('newPostMedia');
+      if (!text && !fileInput.files.length) {
+        alert('Please enter text or upload media to create a post.');
+        return;
+      }
+
+      const post = {
+        id: generateId(),
+        author: 'CurrentUser',
+        avatar: 'https://i.pravatar.cc/45?u=currentuser',
+        timestamp: new Date().toISOString(),
+        content: text,
+        media: null,
+        reactions: {},
+        comments: [],
+      };
+
+      // Handle media upload (only first file)
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const mimeType = file.type;
+          if (mimeType.startsWith('image/')) {
+            post.media = { type: 'image', src: e.target.result };
+          } else if (mimeType.startsWith('video/')) {
+            post.media = { type: 'video', src: e.target.result, mime: mimeType };
+          }
+          posts.unshift(post);
+          renderFeed();
+          clearNewPostForm();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        posts.unshift(post);
+        renderFeed();
+        clearNewPostForm();
+      }
+    });
+
+    // Clear new post inputs after posting
+    function clearNewPostForm() {
+      document.getElementById('newPostText').value = '';
+      document.getElementById('newPostMedia').value = '';
+    }
+
+    // Delegate reaction clicks, edit, delete, comment submit
+    document.getElementById('feed').addEventListener('click', (e) => {
+      // Reaction buttons
+      if (e.target.classList.contains('reaction-btn')) {
+        const postId = e.target.dataset.postid;
+        const reaction = e.target.dataset.reaction;
+        const post = posts.find((p) => p.id === postId);
+        if (!post) return;
+
+        post.reactions[reaction] = (post.reactions[reaction] || 0) + 1;
+        renderFeed();
+        return;
+      }
+
+      // Edit post
+      if (e.target.classList.contains('edit-post-btn')) {
+        const postId = e.target.dataset.postid;
+        startEditingPost(postId);
+        return;
+      }
+
+      // Delete post
+      if (e.target.classList.contains('delete-post-btn')) {
+        const postId = e.target.dataset.postid;
+        if (confirm('Are you sure you want to delete this post?')) {
+          const index = posts.findIndex((p) => p.id === postId);
+          if (index !== -1) {
+            posts.splice(index, 1);
+            renderFeed();
+          }
+        }
+        return;
+      }
+
+      // Edit comment
+      if (e.target.classList.contains('edit-comment-btn')) {
+        const postId = e.target.dataset.postid;
+        const commentId = e.target.dataset.commentid;
+        startEditingComment(postId, commentId);
+        return;
+      }
+
+      // Delete comment
+      if (e.target.classList.contains('delete-comment-btn')) {
+        const postId = e.target.dataset.postid;
+        const commentId = e.target.dataset.commentid;
+        if (confirm('Are you sure you want to delete this comment?')) {
+          const post = posts.find((p) => p.id === postId);
+          if (!post) return;
+          const idx = post.comments.findIndex((c) => c.id === commentId);
+          if (idx !== -1) {
+            post.comments.splice(idx, 1);
+            renderFeed();
+          }
+        }
+        return;
+      }
+    });
+
+    // Handle adding new comments
+    document.getElementById('feed').addEventListener('submit', (e) => {
+      if (!e.target.classList.contains('add-comment')) return;
+      e.preventDefault();
+
+      const postId = e.target.dataset.postid;
+      const textarea = e.target.querySelector('textarea');
+      const text = textarea.value.trim();
+      if (!text) return alert('Please enter a comment.');
+
+      const post = posts.find((p) => p.id === postId);
+      if (!post) return;
+
+      post.comments.push({
+        id: generateId(),
+        author: 'CurrentUser',
+        timestamp: new Date().toISOString(),
+        content: text,
+        reactions: {},
+      });
+      renderFeed();
+    });
+
+    // Start editing post content inline
+    function startEditingPost(postId) {
+      const post = posts.find((p) => p.id === postId);
+      if (!post) return;
+
+      const postElem = document.getElementById('post-' + postId);
+      if (!postElem) return;
+
+      const contentSection = postElem.querySelector('.post-content');
+      if (!contentSection) return;
+
+      // Replace content with textarea
+      const textarea = document.createElement('textarea');
+      textarea.className = 'edit-textarea';
+      textarea.value = post.content;
+      contentSection.replaceWith(textarea);
+
+      textarea.focus();
+
+      // Save edits on blur or enter key
+      textarea.addEventListener('blur', () => {
+        post.content = textarea.value.trim();
+        renderFeed();
+      });
+
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          textarea.blur();
+        }
+      });
+    }
+
+    // Start editing comment content inline
+    function startEditingComment(postId, commentId) {
+      const post = posts.find((p) => p.id === postId);
+      if (!post) return;
+
+      const comment = post.comments.find((c) => c.id === commentId);
+      if (!comment) return;
+
+      const commentElem = document.getElementById('comment-' + commentId);
+      if (!commentElem) return;
+
+      const contentP = commentElem.querySelector('.comment-content');
+      if (!contentP) return;
+
+      // Replace content with textarea
+      const textarea = document.createElement('textarea');
+      textarea.className = 'edit-textarea';
+      textarea.value = comment.content;
+      contentP.replaceWith(textarea);
+
+      textarea.focus();
+
+      // Save edits on blur or enter key
+      textarea.addEventListener('blur', () => {
+        comment.content = textarea.value.trim();
+        renderFeed();
+      });
+
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          textarea.blur();
+        }
+      });
+    }
+
+    // Initial render
+    renderFeed();
+  </script>
+</body>
+
+</html>

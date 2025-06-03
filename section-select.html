@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VibeHive - Collaborations</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+
+    .collaborations-section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .collaborations-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    .collab-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+    }
+
+    .collab-card {
+      background-color: white;
+      border-radius: 20px;
+      padding: 25px;
+      width: 260px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .collab-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .collab-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .collab-card p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .collab-card button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    /* Themed Colors */
+    .student-card {
+      border-top: 5px solid #4e73df;
+    }
+
+    .student-card button {
+      background-color: #4e73df;
+    }
+
+    .student-card button:hover {
+      background-color: #3b5fc3;
+    }
+
+    .business-card {
+      border-top: 5px solid #1cc88a;
+    }
+
+    .business-card button {
+      background-color: #1cc88a;
+    }
+
+    .business-card button:hover {
+      background-color: #159f6a;
+    }
+
+    .articles-card {
+      border-top: 5px solid #f6c23e;
+    }
+
+    .articles-card button {
+      background-color: #f6c23e;
+      color: #333;
+    }
+
+    .articles-card button:hover {
+      background-color: #e0ae2d;
+    }
+
+    .vibers-card {
+      border-top: 5px solid #e74a3b;
+    }
+
+    .vibers-card button {
+      background-color: #e74a3b;
+    }
+
+    .vibers-card button:hover {
+      background-color: #c0392b;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+      .collab-card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="collaborations-section">
+    <h2>VibeHive</h2>
+    <div class="collab-container">
+
+      <!-- Student Section -->
+      <div class="collab-card student-card">
+        <h3>🎓 Vibe Scholars</h3>
+        <p>Team up with classmates or peers for academic and tech-based projects.</p>
+        <button class="collab-btn" data-type="Student">Join Now</button>
+      </div>
+
+      <!-- Business Section -->
+      <div class="collab-card business-card">
+        <h3>💼 Vibe Hustle</h3>
+        <p>Connect with professionals and startups for innovation and partnerships.</p>
+        <button class="collab-btn" data-type="Business">Join Now</button>
+      </div>
+
+      <!-- Articles Section -->
+      <div class="collab-card articles-card">
+        <h3>📰 Vibe Feed</h3>
+        <p>Collaborate with writers to create engaging articles and blog posts.</p>
+        <button class="collab-btn" data-type="Articles">Join Now</button>
+      </div>
+
+      <!-- Vibers Section -->
+      <div class="collab-card vibers-card">
+        <h3>🌐 Vibers</h3>
+        <p>Join interactive spaces to discuss, brainstorm, and innovate together.</p>
+        <button class="collab-btn" data-type="Vibers">Request Collaboration</button>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check login: redirect if not logged in
+      const username = localStorage.getItem('username');
+      if (!username) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // URLs for each section (update these to your actual pages)
+      const sectionUrls = {
+        Student: 'vibe-scholars.html',
+        Business: 'vibe-hustle.html',
+        Articles: 'vibe-feed.html',
+        Vibers: 'index.html'
+      };
+
+      // Add logout button dynamically
+      const container = document.querySelector('.collaborations-section');
+      const logoutBtn = document.createElement('button');
+      logoutBtn.textContent = 'Logout';
+      logoutBtn.style.cssText = `
+        margin-top: 30px;
+        padding: 12px 24px;
+        border: none;
+        background-color: #555;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        transition: background-color 0.3s ease;
+      `;
+      logoutBtn.addEventListener('mouseenter', () => logoutBtn.style.backgroundColor = '#333');
+      logoutBtn.addEventListener('mouseleave', () => logoutBtn.style.backgroundColor = '#555');
+      logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'login.html';
+      });
+      container.appendChild(logoutBtn);
+
+      // Handle collaboration buttons click
+      const collabButtons = document.querySelectorAll('.collab-btn');
+      collabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const type = button.getAttribute('data-type');
+          if (sectionUrls[type]) {
+            localStorage.setItem('category', type.toLowerCase());
+            window.location.href = sectionUrls[type];
+          } else {
+            alert(`No page configured for section "${type}"`);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

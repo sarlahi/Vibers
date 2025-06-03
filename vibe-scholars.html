@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VibeHive Feed</title>
+  <link rel="stylesheet" href="vibe-scholars.css" />
+</head>
+
+<body>
+  <header class="header">
+    <h1>Vibe Scholars</h1>
+    <div class="user-info">
+
+      <span class="username">User</span>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section class="new-post-section card">
+      <h2>Hive a Post</h2>
+      <input type="text" id="newPostAuthor" placeholder="Your name" value="CurrentUser" readonly class="input-text" />
+      <textarea id="newPostContent" placeholder="What's on your mind?" rows="4" class="input-textarea"></textarea>
+      <input type="file" id="newPostMedia" accept="image/*,video/*" class="input-file" />
+      <button id="postBtn" class="primary-btn">Post</button>
+    </section>
+
+    <section id="feed" class="feed"></section>
+  </main>
+
+  <script src="vibe-scholars.js"></script>
+</body>
+
+</html>

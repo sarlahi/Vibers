@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+
+  <title>Two person Chat</title>
+  <link rel="stylesheet" href="chatbox.css" />
+</head>
+
+<body>
+  <div class="animated-bg"></div> <!-- Animated background layer -->
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>Hive Buddy🐝</h2>
+      <button id="modeToggle" class="mode-toggle" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
+        🌙
+      </button>
+    </div>
+    <div id="chat" class="chat-box"></div>
+    <div class="input-area">
+      <select id="senderSelect" aria-label="Select user">
+        <option value="user1">Me</option>
+        <option value="user2">You</option>
+      </select>
+      <input type="text" id="messageInput" placeholder="Type a message..." aria-label="Message input" />
+      <button id="emojiBtn" aria-label="Toggle Emoji Picker" title="Toggle Emoji Picker">😊</button>
+      <div id="emojiPicker" class="emoji-picker" role="list"></div>
+      <button id="sendBtn" aria-label="Send message">Send</button>
+    </div>
+  </div>
+
+  <script src="chatbox.js"></script>
+</body>
+
+</html>
