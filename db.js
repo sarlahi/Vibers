@@ -1,21 +1,13 @@
-// db.js
 const mysql = require('mysql2');
 
-// Create MySQL connection
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: 'localhost',
-  user: 'root',    // e.g., 'root'
-  password: '1234',
-  database: 'vibehive'
+  user: 'root',       // your MySQL username
+  password: '1234',   // your MySQL password
+  database: 'vibehive', // your database name
+  waitForConnections:true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-// Connect and check
-connection.connect((err) => {
-  if (err) {
-    console.error('❌ MySQL connection failed:', err.stack);
-    return;
-  }
-  console.log('✅ Connected to MySQL DB as ID', connection.threadId);
-});
-
-module.exports = connection;
+module.exports = pool.promise();

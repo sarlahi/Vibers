@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeHive-Feed</title>
+  <link rel="stylesheet" href="vibers.css" />
+  <link rel="icon" href="data:,">
+</head>
+
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <h1 id="vibersTitle">Vibers</h1>
+      <div id="topControls">
+        <button id="themeToggle" type="button" aria-label="Toggle light and dark theme">💡</button>
+        <button id="friendToggle" type="button" aria-label="Toggle friend sidebar">👥</button>
+         <a href="chatbox.html" id="messageIcon" title="Open Chat">
+          💬
+         </a>
+
+      </div>
+    </div>
+
+    <div class="main-box">
+      <div id="toggleContent"></div>
+
+      <div id="mainContent">
+        <form id="storyForm" onsubmit="addStory(); return false;">
+          <h2>Hive a Story</h2>
+          <input id="storyUser" placeholder="Your name" aria-label="Story user name" />
+          <textarea id="storyInput" placeholder="Your story text..." aria-label="Story text"></textarea>
+
+          <input type="file" id="storyImageInput" accept="image/*" style="display: none;" />
+          <label for="storyImageInput" class="custom-file-upload" aria-label="Upload image for story">📁</label>
+
+          <button type="submit">Post Story</button>
+        </form>
+
+        <h3 style="margin-bottom: 5px;">Stories</h3>
+        <div class="story-feed" id="storyFeed" aria-live="polite" aria-atomic="true"></div>
+
+        <hr />
+
+        <form id="postForm" onsubmit="addPost(); return false;">
+          <h2>Create Post</h2>
+          <input id="postUser" placeholder="Your name" aria-label="Post user name" />
+          <textarea id="postInput" placeholder="What's on your mind?" aria-label="Post text"></textarea>
+
+          <input type="file" id="postImageInput" accept="image/*" style="display: none;" />
+          <label for="postImageInput" class="custom-file-upload" aria-label="Upload image for post">📁</label>
+
+          <button type="submit">Post</button>
+        </form>
+
+        <h3 style="margin-top: 20px;">Posts</h3>
+        <div class="post-feed" id="postFeed" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </div>
+
+    <aside id="friendSidebar" class="friend-sidebar" aria-label="Friend suggestions sidebar" hidden>
+      <h3>Friend Suggestions</h3>
+      <ul>
+        <li>Jane Doe <button type="button">+ Follow</button></li>
+        <li>John Smith <button type="button">+ Follow</button></li>
+        <li>Alex Johnson <button type="button">+ Follow</button></li>
+      </ul>
+    </aside>
+
+    <script src="vibers.js"></script>
+  </div>
+</body>
+
+</html>
